@@ -39,7 +39,7 @@ export default async function RootLayout({ children, params }) {
       <body className={work_sans.className}>
         <NextIntlClientProvider messages={messages}>
           <ToasterProvider />
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
           {/* <Footer /> */}
         </NextIntlClientProvider>
