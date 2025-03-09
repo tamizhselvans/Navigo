@@ -1,0 +1,8 @@
+{
+  "TopNavigation": {},
+  "Footer": {},
+  "HomePage": {
+    "welcome": "Welcome to our website!",
+    "greeting": "Hello, {name}!"
+  }
+}

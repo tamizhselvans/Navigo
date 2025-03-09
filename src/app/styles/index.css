@@ -1,0 +1,41 @@
+/* Import Bootstrap CSS */
+
+
+/* Custom styles */
+.navbar-language-select {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+}
+
+.footer {
+  background-color: #212529;
+  color: white;
+}
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+.footer-newsletter-input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.footer-newsletter-input:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+}
+
+.footer-newsletter-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
