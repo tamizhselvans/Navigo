@@ -1,13 +1,31 @@
 "use client";
-import React from "react";
+import { useState } from "react";
+import { useLocale } from "next-intl";
+// import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "@/i18n/navigation";
+
+const localeNames = {
+  en: "English",
+  ta: "Tamil",
+};
 
 export default function Navbar() {
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
   const navItems = [
     { key: "home", href: "#" },
     { key: "about", href: "#about" },
     { key: "services", href: "#services" },
     { key: "contact", href: "#contact" },
   ];
+
+  const handleLanguageChange = (event) => {
+    event.preventDefault();
+    const selectedLanguage = event.target.value;
+    router.push(pathname);
+    router.replace(pathname, { locale: selectedLanguage });
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
@@ -34,21 +52,18 @@ export default function Navbar() {
             {navItems.map((item) => (
               <li className="nav-item" key={item.key}>
                 <a className="nav-link" href={item.href}>
-                  Home
+                  {item.key}
                 </a>
               </li>
             ))}
           </ul>
 
-          <select
-            // value={language}
-            // onChange={(e) => setLanguage(e.target.value as any)}
-            className="form-select form-select-sm navbar-language-select"
-            style={{ width: "auto" }}
-          >
-            <option value="en">EN</option>
-            <option value="es">ES</option>
-            <option value="fr">FR</option>
+          <select defaultValue={locale} onChange={handleLanguageChange}>
+            {Object.entries(localeNames).map(([localeKey, localeValue]) => (
+              <option key={localeKey} value={localeKey}>
+                {localeValue}
+              </option>
+            ))}
           </select>
         </div>
       </div>

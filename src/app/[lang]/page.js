@@ -20,7 +20,14 @@ export default async function Page({ params }) {
 
   return (
     <>
-      <main>
+      <main
+        style={{
+          margin: "100px",
+          alignItems: "center",
+          alignContent: "center",
+          textAlign: "center",
+        }}
+      >
         <h1>{t("welcome")}</h1>
         <p>{t("greeting", { name: "NagiGo team" })}</p>
       </main>
