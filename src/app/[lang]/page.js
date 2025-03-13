@@ -1,5 +1,6 @@
 // import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import BusSearchForm from "@/components/BusSearchForm/BusSearchForm";
 
 export async function generateMetadata({ params }) {
   return {
@@ -20,7 +21,7 @@ export default async function Page({ params }) {
 
   return (
     <>
-      <main
+      {/* <main
         style={{
           margin: "100px",
           alignItems: "center",
@@ -30,7 +31,8 @@ export default async function Page({ params }) {
       >
         <h1>{t("welcome")}</h1>
         <p>{t("greeting", { name: "NagiGo team" })}</p>
-      </main>
+      </main> */}
+      <BusSearchForm />
     </>
   );
 }

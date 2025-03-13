@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useLocale } from "next-intl";
-// import { useRouter, usePathname } from "next/navigation";
 import { useRouter, usePathname } from "@/i18n/navigation";
 
 const localeNames = {
@@ -13,52 +12,72 @@ export default function Navbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
   const navItems = [
-    { key: "home", href: "#" },
-    { key: "about", href: "#about" },
-    { key: "services", href: "#services" },
-    { key: "contact", href: "#contact" },
+    { key: "Home", href: "#", icon: "fi fi-ss-house-chimney" },
+    { key: "About", href: "#about", icon: "fi fi-ss-info" },
+    { key: "Services", href: "#services", icon: "fi fi-ss-time-twenty-four" },
+    { key: "Contact", href: "#contact", icon: "fi fi-ss-customer-service" },
   ];
 
   const handleLanguageChange = (event) => {
     event.preventDefault();
     const selectedLanguage = event.target.value;
-    router.push(pathname);
     router.replace(pathname, { locale: selectedLanguage });
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
       <div className="container">
-        <a className="navbar-brand d-flex align-items-center" href="#">
-          {/* <Globe className="me-2" size={24} /> */}
-          <span>Logo</span>
+        {/* Logo */}
+        <a className="navbar-brand fw-bold" href="#">
+          NaviGo
         </a>
 
+        {/* Mobile Menu Toggle */}
         <button
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarContent"
-          aria-controls="navbarContent"
-          aria-expanded="false"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded={isOpen ? "true" : "false"}
           aria-label="Toggle navigation"
+          onClick={() => setIsOpen(!isOpen)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        {/* Navigation Links */}
+        <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`} id="navbarNav">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             {navItems.map((item) => (
               <li className="nav-item" key={item.key}>
-                <a className="nav-link" href={item.href}>
-                  {item.key}
+                <a
+                  className="nav-link px-3 py-2 text-dark fw-semibold position-relative"
+                  href={item.href}
+                >
+                  <i class={item.icon}></i> {item.key}
+                  <span
+                    className="position-absolute start-0 bottom-0 w-100 bg-primary"
+                    style={{
+                      height: "2px",
+                      transform: "scaleX(0)",
+                      transition: "transform 0.3s ease-in-out",
+                    }}
+                  ></span>
                 </a>
               </li>
             ))}
           </ul>
 
-          <select defaultValue={locale} onChange={handleLanguageChange}>
+          {/* Language Selector */}
+          <select
+            className="form-select w-auto ms-3"
+            defaultValue={locale}
+            onChange={handleLanguageChange}
+          >
             {Object.entries(localeNames).map(([localeKey, localeValue]) => (
               <option key={localeKey} value={localeKey}>
                 {localeValue}

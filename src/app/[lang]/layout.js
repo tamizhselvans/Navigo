@@ -7,7 +7,8 @@ import ToasterProvider from "@/components/providers/ToasterProvider";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Layout/Navbar";
 
-import "../styles/index.css"; // Keep existing CSS import
+import "@/app/styles/index.css";
+import "@/app/styles/bootstrap.min.css";
 
 const work_sans = Work_Sans({ subsets: ["latin"] });
 
@@ -34,11 +35,6 @@ export default async function RootLayout({ children, params }) {
           rel="stylesheet"
           href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css"
         />
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
       </head>
       <body className={work_sans.className}>
         <NextIntlClientProvider messages={messages}>
