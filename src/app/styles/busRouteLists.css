@@ -1,0 +1,91 @@
+.bus-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.bus-card {
+  height: 200px;
+  transition: transform 0.2s;
+  overflow: hidden;
+}
+
+.bus-card:hover {
+  transform: translateY(-2px);
+}
+
+.bus-card .card-header {
+  padding: 0.75rem 1.25rem;
+}
+
+.bus-card {
+  transition: transform 0.2s;
+  min-height: 300px;
+}
+
+.bus-card:hover {
+  transform: translateY(-5px);
+}
+
+.bus-card .card-body {
+  padding: 1rem;
+}
+
+.route-line {
+  position: relative;
+  height: 2px;
+  background-color: #dee2e6;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.route-line::before,
+.route-line::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  top: -3px;
+}
+
+.route-line::before {
+  left: 0;
+}
+
+.route-line::after {
+  right: 0;
+}
+
+.govt-seal {
+  width: 32px;
+  height: 32px;
+  opacity: 0.8;
+}
+
+.quick-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.quick-info-item {
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bus-number {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.route-text {
+  font-size: 1rem;
+  font-weight: 600;
+}

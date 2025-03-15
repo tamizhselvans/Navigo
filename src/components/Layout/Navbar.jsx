@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { key: "Home", href: "#", icon: "fi fi-ss-house-chimney" },
+    { key: "Home", href: `/${locale}`, icon: "fi fi-ss-house-chimney" },
     { key: "About", href: "#about", icon: "fi fi-ss-info" },
     { key: "Services", href: "#services", icon: "fi fi-ss-time-twenty-four" },
     { key: "Contact", href: "#contact", icon: "fi fi-ss-customer-service" },
@@ -58,7 +58,7 @@ export default function Navbar() {
                   className="nav-link px-3 py-2 text-dark fw-semibold position-relative"
                   href={item.href}
                 >
-                  <i class={item.icon}></i> {item.key}
+                  <i className={item.icon}></i> {item.key}
                   <span
                     className="position-absolute start-0 bottom-0 w-100 bg-primary"
                     style={{

@@ -2,7 +2,9 @@
   "TopNavigation": {},
   "Footer": {},
   "HomePage": {
-    "welcome": "Welcome to our website!",
-    "greeting": "Hello, {name}!"
+    "from": "From",
+    "to": "To",
+    "date": "Date",
+    "searchBus": "Search Bus"
   }
 }
