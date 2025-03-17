@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useRouter, usePathname } from "@/i18n/navigation";
 
 const localeNames = {
@@ -12,6 +13,7 @@ export default function Navbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
@@ -23,8 +25,11 @@ export default function Navbar() {
 
   const handleLanguageChange = (event) => {
     event.preventDefault();
+    const params = new URLSearchParams(searchParams);
+    const queryString = params?.toString() || null;
     const selectedLanguage = event.target.value;
-    router.replace(pathname, { locale: selectedLanguage });
+    const newUrl = queryString ? `${pathname}?${queryString}` : `${pathname}`;
+    router.replace(newUrl, { locale: selectedLanguage });
   };
 
   return (

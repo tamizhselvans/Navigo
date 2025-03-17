@@ -7,47 +7,8 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
-const buses = [
-  {
-    id: 1,
-    name: "Royal Express",
-    departure: "10:00 AM",
-    arrival: "8:00 PM",
-    duration: "10h",
-    price: 899,
-    seatsAvailable: 23,
-    rating: 4.5,
-    amenities: ["WiFi", "Coffee", "Charging Point"],
-  },
-  {
-    id: 2,
-    name: "City Liner",
-    departure: "11:30 AM",
-    arrival: "9:30 PM",
-    duration: "10h",
-    price: 799,
-    seatsAvailable: 15,
-    rating: 4.2,
-    amenities: ["WiFi", "Blanket", "Movie"],
-  },
-  {
-    id: 3,
-    name: "Night Rider",
-    departure: "9:00 PM",
-    arrival: "7:00 AM",
-    duration: "10h",
-    price: 999,
-    seatsAvailable: 30,
-    rating: 4.7,
-    amenities: ["WiFi", "Coffee", "Blanket", "Charging Point"],
-  },
-];
-
-function BusSearchForm() {
+function BusSearchForm({ lang }) {
   const t = useTranslations("HomePage");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [date, setDate] = useState(new Date());
   const router = useRouter();
 
   const {
@@ -58,6 +19,7 @@ function BusSearchForm() {
 
   const onSubmit = (data) => {
     console.log("Form Data:", data);
+    router.push(`/${lang}/bus-route-lists?from=${data.from}&to=${data.to}`);
   };
 
   return (
@@ -106,7 +68,7 @@ function BusSearchForm() {
               </div>
 
               {/* Date */}
-              <div className="col-md-3">
+              {/* <div className="col-md-3">
                 <div className="form-floating">
                   <input
                     type="date"
@@ -119,7 +81,7 @@ function BusSearchForm() {
                     {t("date")}
                   </label>
                 </div>
-              </div>
+              </div> */}
 
               {/* Search Button */}
               <div className="col-md-3 d-grid">
