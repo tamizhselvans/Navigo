@@ -1,8 +1,14 @@
 import { Bus, Clock, MapPin, Users, IndianRupee, Calendar, Info } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-async function BusRouteList({ index, busDetail }) {
+async function BusRouteList({ index, busDetail, from, to }) {
   const t = await getTranslations("BusShedulePage");
+
+  // Find the stops for 'from' and 'to' locations
+  const fromStop = busDetail.route.stops.find(
+    (stop) => stop.name.toLowerCase() === from.toLowerCase()
+  );
+  const toStop = busDetail.route.stops.find((stop) => stop.name.toLowerCase() === to.toLowerCase());
 
   return (
     <div className="card bus-card shadow-sm" key={index}>
@@ -12,6 +18,7 @@ async function BusRouteList({ index, busDetail }) {
             <Bus size={20} />
             <span className="fw-semibold">{t("governmentBus")}</span>
           </div>
+
           <div className="d-flex align-items-center gap-2">
             <div
               className="govt-seal rounded-circle d-flex align-items-center justify-content-center bg-white"
@@ -27,26 +34,25 @@ async function BusRouteList({ index, busDetail }) {
         <div className="d-flex align-items-center mb-3">
           <MapPin size={16} className="text-primary" />
           <span className="ms-2 route-text">
-            {busDetail.route.start}-{busDetail.route.end}
+            {from} - {to}
           </span>
         </div>
 
         <div className="row align-items-center mb-3">
           <div className="col-5 text-center">
             <small className="text-muted d-block">{t("departure")}</small>
-            <strong>{busDetail.departureTime}</strong>
+            <strong>{fromStop?.departureTime || "-"}</strong>
           </div>
           <div className="col-2">
             <div className="route-line"></div>
           </div>
           <div className="col-5 text-center">
             <small className="text-muted d-block">{t("arrival")}</small>
-            <strong>{busDetail.arrivalTime}</strong>
+            <strong>{toStop?.arrivalTime || "-"}</strong>
           </div>
         </div>
 
-        <div className="quick-info">
-          <div className="quick-info-item"></div>
+        <div className="quick-info mt-3">
           <div className="quick-info-item">
             <IndianRupee size={16} className="text-primary" />
             <small>₹100</small>

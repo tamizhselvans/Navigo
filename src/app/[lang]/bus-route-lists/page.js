@@ -21,7 +21,7 @@ export default async function Page({ params, searchParams }) {
   const { from, to } = await searchParams;
   const t = await getTranslations("BusShedulePage");
   const { busList, busListCount } = await fetchBusRoutes(from, to);
-  // console.log("bus list", busList, "bus count", busListCount);
+  //console.log("bus list", busList, "bus count", busListCount);
 
   return (
     <>
@@ -38,6 +38,8 @@ export default async function Page({ params, searchParams }) {
                 index={index}
                 busDetail={busDetail}
                 busListCount={busListCount}
+                from={from}
+                to={to}
               />
             ))}
         </div>

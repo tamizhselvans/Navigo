@@ -1,57 +1,70 @@
-import prisma from "@/lib/prismadb";
+import { getDatabase, ref, get, query, orderByChild } from "firebase/database";
+import { db } from "@/lib/firebase";
 
 const fetchBusRoutes = async (from, to) => {
   try {
-    const fromStops = await prisma.busStop.findMany({
-      where: { name: from },
-      select: { order: true, routeId: true },
-    });
+    from = from.toLowerCase();
+    to = to.toLowerCase();
 
-    const toStops = await prisma.busStop.findMany({
-      where: { name: to },
-      select: { order: true, routeId: true },
-    });
+    const [routesSnapshot, busesSnapshot, schedulesSnapshot] = await Promise.all([
+      get(ref(db, "routes")),
+      get(ref(db, "buses")),
+      get(query(ref(db, "schedules"), orderByChild("routeId"))),
+    ]);
 
-    if (fromStops.length === 0 || toStops.length === 0) {
-      return [];
+    if (!routesSnapshot.exists() || !busesSnapshot.exists() || !schedulesSnapshot.exists()) {
+      return { busList: [], busListCount: 0 };
     }
+
+    const routesData = routesSnapshot.val();
+    const busesData = busesSnapshot.val();
+    const schedulesData = Object.values(schedulesSnapshot.val());
+
+    const fromStops = [];
+    const toStops = new Map();
+
+    for (const [routeId, route] of Object.entries(routesData)) {
+      Object.values(route.stops).forEach(({ name, order }) => {
+        const stopName = name.toLowerCase();
+        if (stopName === from) fromStops.push({ order, routeId });
+        if (stopName === to) toStops.set(routeId, order);
+      });
+    }
+
+    if (!fromStops.length || !toStops.size) return { busList: [], busListCount: 0 };
 
     const validRoutes = fromStops
-      .map((fs) => ({
-        routeId: fs.routeId,
-        fromOrder: fs.order,
-        toOrder: toStops.find((ts) => ts.routeId === fs.routeId)?.order || Infinity,
+      .map(({ routeId, order }) => ({
+        routeId,
+        fromOrder: order,
+        toOrder: toStops.get(routeId) ?? Infinity,
       }))
-      .filter((route) => route.toOrder > route.fromOrder);
+      .filter(({ fromOrder, toOrder }) => toOrder > fromOrder);
 
-    if (validRoutes.length === 0) {
-      return [];
-    }
+    if (!validRoutes.length) return { busList: [], busListCount: 0 };
 
-    const busList = await prisma.busSchedule.findMany({
-      where: {
-        routeId: { in: validRoutes.map((r) => r.routeId) },
-      },
-      orderBy: { arrivalTime: "asc" },
-      include: {
-        bus: true,
-        route: {
-          include: {
-            stops: true,
+    const busList = schedulesData
+      .filter(({ routeId }) => validRoutes.some((r) => r.routeId == routeId))
+      .map((schedule) => {
+        const { routeId, busId } = schedule;
+        const routeData = routesData[routeId];
+        const busDetail = busesData[busId] || { number: "Unknown" };
+
+        return {
+          ...schedule,
+          bus: { id: busId, number: busDetail.number },
+          route: {
+            ...routeData,
+            stops: Object.values(routeData.stops).sort((a, b) => a.order - b.order),
           },
-        },
-      },
-    });
-    const busListCount = await prisma.busSchedule.count({
-      where: {
-        routeId: { in: validRoutes.map((r) => r.routeId) },
-      },
-    });
+        };
+      });
 
-    return { busList, busListCount };
+    return { busList, busListCount: busList.length };
   } catch (error) {
-    console.error("Error fetching data: ", error);
-    return [];
+    console.error("Error fetching data:", error);
+    return { busList: [], busListCount: 0 };
   }
 };
+
 export default fetchBusRoutes;
