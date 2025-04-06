@@ -14,5 +14,12 @@
     "arrival": "Arrival",
     "schedule": "Schedule",
     "track": "Track"
+  },
+  "BusPage": {
+    "title": "Live Bus Route",
+    "ramanathapuram": "Ramanathapuram",
+    "paramakudi": "Paramakudi",
+    "manamadurai": "Manamadurai",
+    "madurai": "Madurai"
   }
 }

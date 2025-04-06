@@ -1,7 +1,8 @@
 import { getTranslations } from "next-intl/server";
-import BusRouteList from "./BusRouteLists";
+import BusList from "./BusLists";
 import "@/app/styles/busRouteLists.css";
-import fetchBusRoutes from "@/app/actions/getBusList/getBus";
+import axios from "axios";
+// import fetchBusRoutes from "@/app/actions/getBusList/getBus";
 
 export async function generateMetadata({ params }) {
   return {
@@ -20,8 +21,23 @@ export default async function Page({ params, searchParams }) {
   const { lang } = await params;
   const { from, to } = await searchParams;
   const t = await getTranslations("BusShedulePage");
-  const { busList, busListCount } = await fetchBusRoutes(from, to);
-  //console.log("bus list", busList, "bus count", busListCount);
+  const busId = 0;
+  let busList = [],
+    busListCount = 0;
+  try {
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/getBuses?from=${from}&to=${to}&busId=${busId}`
+    );
+
+    ({ busList, busListCount } = data);
+  } catch (error) {
+    return (
+      <div>
+        <h3>Error fetching buses. Please try again later.</h3>
+      </div>
+    );
+  }
+  // console.log("bus list", busList, "bus count", busListCount);
 
   return (
     <>
@@ -33,7 +49,8 @@ export default async function Page({ params, searchParams }) {
         <div className="bus-cards-container">
           {busListCount != 0 &&
             busList.map((busDetail, index) => (
-              <BusRouteList
+              <BusList
+                lang={lang}
                 key={index}
                 index={index}
                 busDetail={busDetail}

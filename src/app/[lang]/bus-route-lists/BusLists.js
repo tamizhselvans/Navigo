@@ -1,10 +1,10 @@
+import Link from "next/link";
 import { Bus, Clock, MapPin, Users, IndianRupee, Calendar, Info } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-async function BusRouteList({ index, busDetail, from, to }) {
+async function BusList({ lang, index, busDetail, from, to }) {
   const t = await getTranslations("BusShedulePage");
 
-  // Find the stops for 'from' and 'to' locations
   const fromStop = busDetail.route.stops.find(
     (stop) => stop.name.toLowerCase() === from.toLowerCase()
   );
@@ -58,13 +58,17 @@ async function BusRouteList({ index, busDetail, from, to }) {
             <small>₹100</small>
           </div>
           <button className="btn btn-outline-secondary btn-sm">{t("schedule")}</button>
-          <button className="btn btn-primary btn-sm" style={{ backgroundColor: "#d84e55" }}>
+          <Link
+            href={`/${lang}/bus-route-lists/${busDetail.bus.id}?from=${from}&to=${to}`}
+            className="btn btn-outline-secondary btn-sm"
+            style={{ backgroundColor: "#d84e55", color: "white" }}
+          >
             {t("track")}
-          </button>
+          </Link>
         </div>
       </div>
     </div>
   );
 }
 
-export default BusRouteList;
+export default BusList;

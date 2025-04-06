@@ -14,5 +14,12 @@
     "arrival": "வருகை",
     "schedule": "அட்டவணை",
     "track": "தடம்"
+  },
+  "BusPage": {
+    "title": "Live Bus Route",
+    "ramanathapuram": "Ramanathapuram",
+    "paramakudi": "Paramakudi",
+    "manamadurai": "Manamadurai",
+    "madurai": "Madurai"
   }
 }
