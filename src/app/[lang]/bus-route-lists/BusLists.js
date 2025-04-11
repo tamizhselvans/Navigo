@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bus, Clock, MapPin, Users, IndianRupee, Calendar, Info } from "lucide-react";
+import { Bus, MapPin, IndianRupee } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 async function BusList({ lang, index, busDetail, from, to }) {

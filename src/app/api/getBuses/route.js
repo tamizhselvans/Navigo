@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase";
-import { ref, get, query, orderByChild } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
@@ -7,38 +7,40 @@ export async function GET(req) {
   const from = searchParams.get("from")?.toLowerCase() || "";
   const to = searchParams.get("to")?.toLowerCase() || "";
   const busIdParam = searchParams.get("busId");
-  let busId = null;
 
-  if (busIdParam === 0) {
-    busId = null;
-  } else {
-    busId = parseInt(busIdParam) || null;
-  }
+  const busId = busIdParam === "0" ? null : parseInt(busIdParam) || null;
 
   try {
-    const [routesSnapshot, busesSnapshot, schedulesSnapshot] = await Promise.all([
-      get(ref(db, "routes")),
-      get(ref(db, "buses")),
-      get(ref(db, "schedules")),
-    ]);
-
-    if (!routesSnapshot.exists() || !busesSnapshot.exists() || !schedulesSnapshot.exists()) {
+    // Fetch only schedules first, which is the entry point
+    const schedulesSnapshot = await get(ref(db, "schedules"));
+    if (!schedulesSnapshot.exists()) {
       return NextResponse.json({ busList: [], busListCount: 0 });
     }
 
-    const routesData = routesSnapshot.val();
-    const busesData = busesSnapshot.val();
-    const schedulesData = Object.values(schedulesSnapshot.val());
+    const schedules = Object.values(schedulesSnapshot.val());
+
+    const routeIdsToFetch = new Set(schedules.map((s) => s.routeId));
+
+    const [routesSnapshot, busesSnapshot] = await Promise.all([
+      get(ref(db, "routes")),
+      get(ref(db, "buses")),
+    ]);
+
+    const routes = routesSnapshot.exists() ? routesSnapshot.val() : {};
+    const buses = busesSnapshot.exists() ? busesSnapshot.val() : {};
 
     const fromStops = [];
     const toStops = new Map();
 
-    for (const [routeId, route] of Object.entries(routesData)) {
-      Object.values(route.stops).forEach(({ name, order }) => {
+    for (const routeId of routeIdsToFetch) {
+      const route = routes[routeId];
+      if (!route || !route.stops) continue;
+
+      for (const { name, order } of Object.values(route.stops)) {
         const stopName = name.toLowerCase();
         if (stopName === from) fromStops.push({ order, routeId });
         if (stopName === to) toStops.set(routeId, order);
-      });
+      }
     }
 
     if (!fromStops.length || !toStops.size) {
@@ -53,31 +55,27 @@ export async function GET(req) {
       }))
       .filter(({ fromOrder, toOrder }) => toOrder > fromOrder);
 
-    if (!validRoutes.length) {
-      return NextResponse.json({ busList: [], busListCount: 0 });
-    }
+    const validRouteIds = new Set(validRoutes.map((r) => r.routeId));
 
-    const busList = schedulesData
+    const busList = schedules
       .filter(
         ({ routeId, busId: scheduleBusId }) =>
-          validRoutes.some((r) => r.routeId == routeId) &&
-          (busId === null || scheduleBusId == busId)
+          validRouteIds.has(routeId) && (busId === null || scheduleBusId === busId)
       )
       .map((schedule) => {
         const { routeId, busId } = schedule;
-        const routeData = routesData[routeId];
-        const busDetail = busesData[busId] || { number: "Unknown" };
+        const route = routes[routeId];
+        const bus = buses[busId] || { number: "Unknown" };
 
         return {
           ...schedule,
-          bus: { id: busId, number: busDetail.number },
+          bus: { id: busId, number: bus.number },
           route: {
-            ...routeData,
-            stops: Object.values(routeData.stops).sort((a, b) => a.order - b.order),
+            ...route,
+            stops: Object.values(route.stops).sort((a, b) => a.order - b.order),
           },
         };
       });
-    // console.log(busList);
 
     return NextResponse.json({ busList, busListCount: busList.length });
   } catch (error) {

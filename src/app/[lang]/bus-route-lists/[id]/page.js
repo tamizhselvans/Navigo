@@ -1,58 +1,55 @@
-// "use client";
-import { getTranslations } from "next-intl/server";
-// import dynamic from "next/dynamic";
+"use client";
+
+import { useEffect, useState } from "react";
 import axios from "axios";
-import BusMap from "@/components/BusDetailPage/MapEmbed";
+import TrackBus from "@/components/BusDetailPage/TrackBus";
+import { useParams, useSearchParams } from "next/navigation";
 import "@/app/styles/busRouteLists.css";
+import Loading from "@/components/status/Loading";
 
-// const BusMap = dynamic(() => import("@/components/BusDetailPage/MapEmbed"), {
-//   ssr: false,
-// });
+export default function Page() {
+  const params = useParams();
+  const searchParams = useSearchParams();
 
-export default async function Page({ params, searchParams }) {
-  const { lang, id } = await params;
-  const { from, to } = await searchParams;
-  const t = await getTranslations("BusPage");
+  const lang = params.lang;
+  const id = params.id;
 
-  let busList = [],
-    busListCount = 0;
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
 
-  // const busStops = [
-  //   { name: "Ramanathapuram", lat: 9.3716, lng: 78.8308 },
-  //   { name: "Paramakudi", lat: 9.5442, lng: 78.5901 },
-  //   { name: "Manamadurai", lat: 9.545, lng: 78.4766 },
-  //   { name: "Madurai", lat: 9.9252, lng: 78.1198 },
-  // ];
+  const [busList, setBusList] = useState([]);
 
-  try {
-    const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/getBuses?from=${from}&to=${to}&busId=${id}`
-    );
+  useEffect(() => {
+    const fetchBusData = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getBuses?from=${from}&to=${to}&busId=${id}`
+        );
+        setBusList(data.busList || []);
+      } catch (err) {
+        setError("Error fetching buses. Please try again later.");
+      }
+    };
 
-    ({ busList, busListCount } = data);
-    //console.log(busList);
-  } catch (error) {
-    return (
-      <div>
-        <h3>Error fetching buses. Please try again later.</h3>
-      </div>
-    );
+    fetchBusData();
+    const timer = setTimeout(() => {
+      fetchBusData();
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [from, to, id]);
+
+  //  ==============
+  // We have to work on this after completing the GPS data upload to the server, and then fetch the data from the database using an API
+  const currentBusPosition = [9.545, 78.4766];
+  //  ==============
+
+  if (busList.length === 0) {
+    return <Loading />;
   }
 
-  const currentBusPosition = [9.3716, 78.8308];
-
-  const busDetail = await busList[0].route.stops;
-
   return (
-    <>
-      <div style={{ marginTop: "60px" }}>
-        <BusMap
-          lang={lang}
-          busStops={busDetail}
-          currentBusPosition={currentBusPosition}
-          busData={busList}
-        />
-      </div>
-    </>
+    <div style={{ marginTop: "60px" }}>
+      <TrackBus lang={lang} currentBusPosition={currentBusPosition} busData={busList[0]} />
+    </div>
   );
 }

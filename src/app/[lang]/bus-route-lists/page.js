@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import BusList from "./BusLists";
 import "@/app/styles/busRouteLists.css";
 import axios from "axios";
+import Empty from "@/components/status/Empty";
 // import fetchBusRoutes from "@/app/actions/getBusList/getBus";
 
 export async function generateMetadata({ params }) {
@@ -47,7 +48,7 @@ export default async function Page({ params, searchParams }) {
         </div>
 
         <div className="bus-cards-container">
-          {busListCount != 0 &&
+          {busListCount != 0 ? (
             busList.map((busDetail, index) => (
               <BusList
                 lang={lang}
@@ -58,7 +59,10 @@ export default async function Page({ params, searchParams }) {
                 from={from}
                 to={to}
               />
-            ))}
+            ))
+          ) : (
+            <Empty />
+          )}
         </div>
       </div>
     </>
