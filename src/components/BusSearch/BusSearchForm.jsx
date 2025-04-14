@@ -73,7 +73,8 @@ function BusSearchForm({ lang }) {
         className="hero-section mb-4 text-center py-5"
         style={{
           marginTop: "60px",
-          backgroundImage: "url('/images/busImage.jpg')",
+          backgroundImage:
+            "url('https://i1.modland.net/i/60a949f301b83/ets2_20210426_204531_00-lg_modland.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -81,10 +82,10 @@ function BusSearchForm({ lang }) {
         }}
       >
         <div className="container mb-4">
-          <div className="row justify-content-end">
-            <div className="col-md-6 text-end">
-              <h1 className="display-5 fw-bold">Navigo</h1>
-              <p className="lead">Track, ride, repeat.</p>
+          <div className="row justify-content-start">
+            <div className="col-md-6 text-start">
+              <h1 className="display-2 fw-bold">Navigo</h1>
+              <p className="lead fs-4">Track, ride, repeat.</p>
             </div>
           </div>
         </div>
