@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
-  console.log(req.url);
+  //console.log(req.url);
 
   const from = searchParams.get("from")?.toLowerCase() || "";
   const to = searchParams.get("to")?.toLowerCase() || "";

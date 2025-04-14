@@ -69,13 +69,39 @@ function BusSearchForm({ lang }) {
 
   return (
     <>
-      <div className="hero-section mb-4 text-center py-5">
-        <h1 className="display-4 fw-bold mb-3">Book Bus Tickets</h1>
-        <p className="lead">Travel with comfort and safety</p>
+      <div
+        className="hero-section mb-4 text-center py-5"
+        style={{
+          marginTop: "60px",
+          backgroundImage: "url('/images/busImage.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          width: "100%",
+        }}
+      >
+        <div className="container mb-4">
+          <div className="row justify-content-end">
+            <div className="col-md-6 text-end">
+              <h1 className="display-5 fw-bold">Navigo</h1>
+              <p className="lead">Track, ride, repeat.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="container">
-        <div className="search-box p-4 bg-white shadow rounded mb-5">
+        <div
+          className="search-box p-4 shadow rounded mb-5"
+          style={{
+            background: "rgba(255, 255, 255, 0.15)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+            borderRadius: "16px",
+          }}
+        >
           <form onSubmit={handleSubmit(onSubmit)} className="row g-3">
             {/* From City */}
             <div className="col-md-3 position-relative">
@@ -142,7 +168,7 @@ function BusSearchForm({ lang }) {
             </div>
 
             {/* Search Button */}
-            <div className="col-md-3 d-grid">
+            <div className="col-md-3 d-grid ms-auto">
               <button
                 type="submit"
                 className="btn btn search-box"

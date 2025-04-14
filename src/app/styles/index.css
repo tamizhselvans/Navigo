@@ -9,6 +9,7 @@ body {
   --primary-color: #111626;
   --secondary-color: #344373;
   --background: #99c8f2;
+  --asset-path: "/images";
 }
 
 body {
@@ -69,8 +70,6 @@ body {
 }
 
 .hero-section {
-  background: url("https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1920")
-    center/cover;
   height: 60vh;
   position: relative;
   display: flex;
