@@ -57,11 +57,11 @@ async function BusList({ lang, index, busDetail, from, to }) {
             <IndianRupee size={16} className="text-primary" />
             <small>₹100</small>
           </div>
-          <button className="btn btn-outline-secondary btn-sm">{t("schedule")}</button>
+
           <Link
             href={`/${lang}/bus-route-lists/${busDetail.bus.id}?from=${from}&to=${to}`}
-            className="btn btn-outline-secondary btn-sm"
-            style={{ backgroundColor: "#d84e55", color: "white" }}
+            className="btn btn-outline-secondary btn-sm w-25"
+            style={{ backgroundColor: "#111626", color: "white" }}
           >
             {t("track")}
           </Link>

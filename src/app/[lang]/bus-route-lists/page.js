@@ -44,7 +44,7 @@ export default async function Page({ params, searchParams }) {
     <>
       <div className="min-vh-100 bg-white  mt-5">
         <div className="text-dark fw-bold fs-5 text-center w-100" style={{ marginTop: "4rem" }}>
-          {t("availableBuses")}: <span className="text-danger">{busListCount}</span>
+          {t("availableBuses")}: <span style={{ color: "#111626" }}>{busListCount}</span>
         </div>
 
         <div className="bus-cards-container">

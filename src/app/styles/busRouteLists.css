@@ -66,8 +66,8 @@
 }
 
 .quick-info {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  justify-content: space-between;
   gap: 0.5rem;
 }
 
@@ -75,6 +75,7 @@
   background-color: #f8f9fa;
   padding: 0.5rem;
   border-radius: 0.25rem;
+  justify-content: space-between;
   display: flex;
   align-items: center;
   gap: 0.5rem;

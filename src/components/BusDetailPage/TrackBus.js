@@ -29,7 +29,7 @@ const TrackBus = ({ lang, busData, currentBusPosition }) => {
   return (
     <div className="container my-4">
       <div className="card shadow-lg border-0">
-        <div className="card-header bg-primary text-white">
+        <div className="card-header text-white" style={{ backgroundColor: "#111626" }}>
           <h4 className="mb-0">{route.name}</h4>
           <small className="text-light">
             Date: {date} | Status:{" "}

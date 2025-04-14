@@ -31,14 +31,14 @@ function BusSearchForm({ lang }) {
     const loadPlaces = async () => {
       const places = await fetchBusRoutes();
       setAllPlaces(places);
-      console.log(places);
+      //console.log(places);
     };
     loadPlaces();
   }, []);
 
   useEffect(() => {
     //console.log(allPlaces);
-    console.log(fromInput, toInput);
+    //console.log(fromInput, toInput);
 
     if (fromInput) {
       setFromSuggestions(
@@ -68,8 +68,8 @@ function BusSearchForm({ lang }) {
   };
 
   return (
-    <div>
-      <div className="hero-section mb-4 text-center py-5 bg-light">
+    <>
+      <div className="hero-section mb-4 text-center py-5">
         <h1 className="display-4 fw-bold mb-3">Book Bus Tickets</h1>
         <p className="lead">Travel with comfort and safety</p>
       </div>
@@ -143,14 +143,18 @@ function BusSearchForm({ lang }) {
 
             {/* Search Button */}
             <div className="col-md-3 d-grid">
-              <button type="submit" className="btn btn-danger btn-lg">
+              <button
+                type="submit"
+                className="btn btn search-box"
+                style={{ backgroundColor: "#111626", color: "white" }}
+              >
                 {t("searchBus")}
               </button>
             </div>
           </form>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

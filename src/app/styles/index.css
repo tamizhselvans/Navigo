@@ -6,8 +6,9 @@ body {
 }
 
 :root {
-  --primary-color: #d84e55;
-  --secondary-color: #3e3e52;
+  --primary-color: #111626;
+  --secondary-color: #344373;
+  --background: #99c8f2;
 }
 
 body {
@@ -24,7 +25,7 @@ body {
 }
 
 .search-container {
-  background: linear-gradient(45deg, var(--primary-color), #ff6b6b);
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-color));
   padding: 3rem 0;
   margin-bottom: 2rem;
 }
@@ -33,7 +34,7 @@ body {
   background: white;
   border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px #111626;
 }
 
 .bus-card {
