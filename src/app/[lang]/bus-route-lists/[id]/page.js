@@ -27,7 +27,8 @@ export default function Page() {
         );
         setBusList(data.busList || []);
       } catch (err) {
-        setError("Error fetching buses. Please try again later.");
+        // setError("Error fetching buses. Please try again later.");
+        console.log("Error fetching buses. Please try again later.");
       }
     };
 
