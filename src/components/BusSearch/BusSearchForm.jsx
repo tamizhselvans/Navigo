@@ -84,7 +84,7 @@ function BusSearchForm({ lang }) {
         <div className="container mb-4">
           <div className="row justify-content-start">
             <div className="col-md-6 text-start">
-              <h1 className="display-2 fw-bold">Navigo</h1>
+              <h1 className="display-1 fw-bold">Navigo</h1>
               <p className="lead fs-4">Track, ride, repeat.</p>
             </div>
           </div>
