@@ -17,6 +17,9 @@ export const metadata = {
   description: "NaviGo to track the government buses using GPS tracking system",
   keywords:
     "Government bus tracking, Real-time bus tracking, GPS bus tracker, Track government buses, Public transport tracker, Live bus location",
+  icons: {
+    icon: "busIcon.jpg",
+  },
 };
 
 export default async function RootLayout({ children, params }) {
