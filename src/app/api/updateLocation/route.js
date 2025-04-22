@@ -2,7 +2,7 @@ import { db } from "@/lib/firebase";
 import { ref, update } from "firebase/database";
 import { NextResponse } from "next/server";
 
-export async function PUT(req) {
+export async function POST(req) {
   try {
     const { busId, langitude, longitude } = await req.json();
 
@@ -20,3 +20,4 @@ export async function PUT(req) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+//
