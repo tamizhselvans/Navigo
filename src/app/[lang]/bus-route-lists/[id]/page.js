@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TrackBus from "@/components/BusDetailPage/TrackBus";
 import { useParams, useSearchParams } from "next/navigation";
-import "@/app/styles/busRouteLists.css";
+import { db } from "@/lib/firebase";
+import { ref, onValue, off } from "firebase/database";
 import Loading from "@/components/status/Loading";
+import TrackBus from "@/components/BusDetailPage/TrackBus";
+import "@/app/styles/busRouteLists.css";
 
 export default function Page() {
   const params = useParams();
@@ -18,6 +20,9 @@ export default function Page() {
   const to = searchParams.get("to");
 
   const [busList, setBusList] = useState([]);
+  const [seatCount, setSeatCount] = useState({});
+  const [currentBusPosition, setCurrentBusPosition] = useState([0.0, 0.0]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBusData = async () => {
@@ -25,32 +30,60 @@ export default function Page() {
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/getBuses?from=${from}&to=${to}&busId=${id}`
         );
-        setBusList(data.busList || []);
+
+        setBusList(data.busList);
+        setIsLoading(false);
       } catch (err) {
-        // setError("Error fetching buses. Please try again later.");
-        console.log("Error fetching buses. Please try again later.");
+        console.error("Error fetching buses:", err);
+        setIsLoading(false);
       }
     };
 
     fetchBusData();
-    const timer = setTimeout(() => {
-      fetchBusData();
-    }, 10000);
-    return () => clearTimeout(timer);
+    // const timer = setInterval(fetchBusData, 10000);
+    // return () => clearInterval(timer);
   }, [from, to, id]);
 
-  //  ==============
-  // We have to work on this after completing the GPS data upload to the server, and then fetch the data from the database using an API
-  const currentBusPosition = [9.545, 78.4766];
-  //  ==============
+  useEffect(() => {
+    const busRef = ref(db, `buses/${id}`);
 
-  if (busList.length === 0) {
+    const unsubscribe = onValue(busRef, (snapshot) => {
+      const data = snapshot.val();
+
+      if (data) {
+        setCurrentBusPosition([data.langitude, data.longitude]);
+      }
+    });
+
+    return () => off(busRef, "value", unsubscribe);
+  }, [id]);
+
+  useEffect(() => {
+    const seatRef = ref(db, `seatCount/${id}`);
+
+    const unsubscribe = onValue(seatRef, (snapshot) => {
+      const data = snapshot.val();
+
+      if (data) {
+        setSeatCount(data.seats);
+      }
+    });
+
+    return () => off(seatRef, "value", unsubscribe);
+  }, [id]);
+
+  if (isLoading) {
     return <Loading />;
   }
 
   return (
     <div style={{ marginTop: "60px" }}>
-      <TrackBus lang={lang} currentBusPosition={currentBusPosition} busData={busList[0]} />
+      <TrackBus
+        lang={lang}
+        currentBusPosition={currentBusPosition}
+        busData={busList[0]}
+        seatCount={seatCount}
+      />
     </div>
   );
 }
