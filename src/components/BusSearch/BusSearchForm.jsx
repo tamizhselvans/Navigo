@@ -178,6 +178,18 @@ function BusSearchForm({ lang }) {
                 </ul>
               )}
             </div>
+            <div className="col-md-3 position-relative">
+              <div className="form-floating">
+                <input
+                  type="date"
+                  className="form-control"
+                  id="travelDate"
+                  placeholder="Date"
+                  {...register("date", { required: true })}
+                />
+                <label htmlFor="travelDate">📅 {t("date") || "Date"}</label>
+              </div>
+            </div>
 
             {/* Search Button */}
             <div className="col-md-3 d-grid ms-auto">

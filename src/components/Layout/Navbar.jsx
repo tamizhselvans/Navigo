@@ -17,10 +17,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { key: "Home", href: `/${locale}`, icon: "fi fi-ss-house-chimney" },
-    { key: "About", href: "#about", icon: "fi fi-ss-info" },
-    { key: "Services", href: "#services", icon: "fi fi-ss-time-twenty-four" },
-    { key: "Contact", href: "#contact", icon: "fi fi-ss-customer-service" },
+    { key: "Find Bus", href: `/${locale}`, icon: "fi fi-ss-bus-alt" },
+    { key: "About", href: `/${locale}/about`, icon: "fi fi-ss-info" },
   ];
 
   const handleLanguageChange = (event) => {

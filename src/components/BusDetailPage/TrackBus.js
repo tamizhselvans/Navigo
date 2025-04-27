@@ -42,7 +42,8 @@ const TrackBus = ({ lang, busData, currentBusPosition }) => {
           <h5 className="card-title">Bus Number: {bus.number}</h5>
           <p className="card-text">
             <strong>Departure:</strong> {departureTime} <br />
-            <strong>Arrival:</strong> {arrivalTime}
+            <strong>Arrival:</strong> {arrivalTime} <br />
+            <strong>Seat Availability:</strong> Full
           </p>
 
           <hr />
