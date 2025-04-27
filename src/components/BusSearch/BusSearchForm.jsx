@@ -41,17 +41,28 @@ function BusSearchForm({ lang }) {
     //console.log(fromInput, toInput);
 
     if (fromInput) {
-      setFromSuggestions(
-        allPlaces.filter((place) => place.toLowerCase().includes(fromInput.toLowerCase()))
+      const sortedFromPlace = allPlaces.filter((place) =>
+        place.toLowerCase().includes(fromInput.toLowerCase())
       );
+      setFromSuggestions(sortedFromPlace);
+      if (
+        sortedFromPlace.length === 1 &&
+        sortedFromPlace[0].toLowerCase() === fromInput.toLowerCase()
+      ) {
+        setFromSuggestions([]);
+      }
     } else {
       setFromSuggestions([]);
     }
 
     if (toInput) {
-      setToSuggestions(
-        allPlaces.filter((place) => place.toLowerCase().includes(toInput.toLowerCase()))
+      const sortedToPlace = allPlaces.filter((place) =>
+        place.toLowerCase().includes(toInput.toLowerCase())
       );
+      setToSuggestions(sortedToPlace);
+      if (sortedToPlace.length === 1 && sortedToPlace[0].toLowerCase() === toInput.toLowerCase()) {
+        setToSuggestions([]);
+      }
     } else {
       setToSuggestions([]);
     }
