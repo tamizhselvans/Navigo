@@ -7,12 +7,12 @@ import Empty from "@/components/status/Empty";
 
 export async function generateMetadata({ params }) {
   return {
-    metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
+    metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/bus-route-lists`),
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_BASE_URL}`,
       languages: {
-        en: `${process.env.NEXT_PUBLIC_BASE_URL}/en`,
-        ta: `${process.env.NEXT_PUBLIC_BASE_URL}/ta`,
+        en: `${process.env.NEXT_PUBLIC_BASE_URL}/en/bus-route-lists`,
+        ta: `${process.env.NEXT_PUBLIC_BASE_URL}/ta/bus-route-lists`,
       },
     },
   };
