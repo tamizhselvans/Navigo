@@ -27,9 +27,12 @@ export default function Page() {
   useEffect(() => {
     const fetchBusData = async () => {
       try {
+        const url = `/api/getBuses?from=${from}&to=${to}&busId=${id}`
+        console.log(url);
         const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/getBuses?from=${from}&to=${to}&busId=${id}`
+          url
         );
+        
 
         setBusList(data.busList);
         setIsLoading(false);
