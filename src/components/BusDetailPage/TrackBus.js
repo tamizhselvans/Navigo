@@ -12,19 +12,43 @@ const TrackBus = ({ lang, busData, currentBusPosition }) => {
   const { arrivalTime, departureTime, date, status, bus, route } = busData;
   const [placeName, setPlaceName] = useState("Unknown Location");
 
+  // useEffect(() => {
+  //   const getPlaceName = async (latitude, longitude) => {
+  //     const apiKey = "f72b059cb2ed49c3b031dcf1aa4cc4b0";
+  //     const url= `http://api.geonames.org/findNearbyStreet?lat=${latitude}&lng=${longitude}&username=wazil`
+  //     //const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C+${longitude}&key=${apiKey}`;
+  //     try {
+  //       const response = await axios.get(url);
+  //       console.log(response.data);
+  //       const parser = new DOMParser();
+  //       const xmlDoc = parser.parseFromString(response.data, "application/xml");
+
+  //       // Get the value of <toponymName>
+  //       const toponymName = xmlDoc.getElementsByTagName("toponymName")[0].textContent;
+        
+  //       setPlaceName(toponymName || "Unknown Location");
+  //     } catch (error) {
+  //       setPlaceName("Location not found");
+  //     }
+  //   };
+  //   getPlaceName(currentBusPosition[0], currentBusPosition[1]);
+  // }, [currentBusPosition]);
   useEffect(() => {
     const getPlaceName = async (latitude, longitude) => {
-      const apiKey = "f72b059cb2ed49c3b031dcf1aa4cc4b0";
-      const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C+${longitude}&key=${apiKey}`;
+      const url= `/api/getPlaceName?latitude=${latitude}&longitude=${longitude}`
+      //const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C+${longitude}&key=${apiKey}`;
       try {
         const response = await axios.get(url);
-        setPlaceName(response.data.results[0]?.formatted || "Unknown Location");
+        console.log(response.data);
+        
+        setPlaceName(response.data.place || "Unknown Location");
       } catch (error) {
         setPlaceName("Location not found");
       }
     };
     getPlaceName(currentBusPosition[0], currentBusPosition[1]);
   }, [currentBusPosition]);
+
 
   return (
     <div className="container my-4">
