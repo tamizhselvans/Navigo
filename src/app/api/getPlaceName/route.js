@@ -9,12 +9,12 @@ export async function GET(req) {
 
   const latitude = searchParams.get("latitude") || "";
   const longitude = searchParams.get("longitude") || "";
-  const url = `http://api.geonames.org/findNearbyPlaceName?lat=${latitude}&lng=${longitude}&username=wazil`;
+  const url = `http://api.geonames.org/streetNameLookup?lat=${latitude}&lng=${longitude}&username=wazil`;
 
   try {
     const response = await axios.get(url);
     console.log(response);
-    
+
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(response.data, "application/xml");
 

@@ -88,6 +88,13 @@ export default function Navbar() {
             ))}
           </select>
         </div>
+        {/* SOS Button */}
+        <button
+          className="btn btn-danger ms-3 fw-semibold"
+          onClick={() => alert("Alert sent successfull")}
+        >
+          🚨 SOS
+        </button>
       </div>
     </nav>
   );
