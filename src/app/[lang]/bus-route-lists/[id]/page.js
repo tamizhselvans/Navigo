@@ -20,19 +20,15 @@ export default function Page() {
   const to = searchParams.get("to");
 
   const [busList, setBusList] = useState([]);
-  const [seatCount, setSeatCount] = useState({});
+  const [seatCount, setSeatCount] = useState(0);
   const [currentBusPosition, setCurrentBusPosition] = useState([0.0, 0.0]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBusData = async () => {
       try {
-        const url = `/api/getBuses?from=${from}&to=${to}&busId=${id}`
-        console.log(url);
-        const { data } = await axios.get(
-          url
-        );
-        
+        const url = `/api/getBuses?from=${from}&to=${to}&busId=${id}`;
+        const { data } = await axios.get(url);
 
         setBusList(data.busList);
         setIsLoading(false);
@@ -62,13 +58,13 @@ export default function Page() {
   }, [id]);
 
   useEffect(() => {
-    const seatRef = ref(db, `seatCount/${id}`);
+    const seatRef = ref(db, `seatCount/${id}/seats`);
 
     const unsubscribe = onValue(seatRef, (snapshot) => {
       const data = snapshot.val();
 
       if (data) {
-        setSeatCount(data.seats);
+        setSeatCount(Object.values(data).reduce((sum, value) => sum + value, 0));
       }
     });
 
